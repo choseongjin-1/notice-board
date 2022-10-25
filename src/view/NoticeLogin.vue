@@ -24,7 +24,7 @@ export default {
         onMounted(() => {
         });
 
-        const mv_page = (page) => {
+        const mvPage = (page) => {
             if (page == "back") {
                 instance.proxy.$router.go(-1)
                 return
@@ -47,7 +47,7 @@ export default {
                     console.log('login', login)
                     if (data.code == "0000") {
                         alert("로그인이 완료되었습니다.")
-                        mv_page("noticeMain")
+                        mvPage("noticeMain")
                     } else {
                         alert("로그인에 실패하였습니다. 관리자에게 문의해주세요.")
                     }

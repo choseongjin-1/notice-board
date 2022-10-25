@@ -6,6 +6,7 @@
 <script>
 import { onMounted } from "vue";
 import { useStore } from "vuex";
+// https://fyzh99.tistory.com/39?category=837734 html 출처
 
 export default {
     name : 'App',
