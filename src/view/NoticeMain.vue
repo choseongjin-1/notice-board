@@ -1,5 +1,8 @@
 <template>
-    <div>NMain</div>
+    <div>
+        <h1>게시판</h1>
+        <span>제목</span><input type="text">
+    </div>
 </template>
 
 <script>

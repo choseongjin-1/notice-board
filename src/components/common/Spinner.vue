@@ -17,6 +17,7 @@ export default {
     },
 };
 </script>
+
 <style>
 .loding-area {
     width: 100%;
