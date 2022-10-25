@@ -1,5 +1,5 @@
 import axios from "axios"
-import {common} from '../../front/src/views/common';
+import {common} from './view/common';
 //import router from '../../front/src/router'
 import store from './store/index'
 
@@ -31,6 +31,7 @@ axiosInstance.interceptors.response.use(
     error => {
         console.log('error',error)
         store.commit('Loading/endSpinner');
+        let errorMsg = error.response.errorMsg
         
         // error 401
         if (error.response.status == 401) {

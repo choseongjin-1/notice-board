@@ -2,11 +2,9 @@
 <template>
     <div class="loding-area" v-if="loading"></div>
     <div class="loading" v-if="loading">
-
-            <div class="load">
-                <img src="@/assets/images/loading.gif" alt="loading...">
-            </div>
-        
+        <div class="load">
+            <img src="@/assets/images/loading.gif" alt="loading...">
+        </div>
     </div>
 </template>
 <script>

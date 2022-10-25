@@ -1,6 +1,7 @@
 <template>
-  <router-view/>
-  <!-- <spinner :loading="this.$store.state.Loading.LoadingStatus" /> -->
+  <div>app</div>
+  <!-- <router-view/> -->
+  <!-- <Spinner :loading="store.getters['Loading/loadingStatus']" /> -->
 </template>
 
 <script>
@@ -15,7 +16,6 @@ export default {
 
       onMounted(() => {
         console.log("start vue!!");
-        //store.commit('Loading/endSpinner');
       });
 
       return {

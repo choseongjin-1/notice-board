@@ -1,18 +1,19 @@
 <template>
-    <div>main</div>
+    <div>NMain</div>
 </template>
 
 <script>
 import { onMounted, getCurrentInstance} from "vue";
 
 export default {
-    name : 'WH_mypage_address_up',
+    name : 'noticeMain',
     components:{},
     setup(){
 
         const instance = getCurrentInstance();
 
         onMounted(() => {
+            console.log('main');
         });
 
         const mv_page = (page) => {
