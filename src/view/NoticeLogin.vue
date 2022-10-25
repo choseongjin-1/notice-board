@@ -46,6 +46,7 @@ export default {
                 .then(({ data }) => {
                     console.log('login', login)
                     if (data.code == "0000") {
+                        // branch test
                         alert("로그인이 완료되었습니다.")
                         mvPage("noticeMain")
                     } else {
