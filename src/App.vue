@@ -1,6 +1,5 @@
 <template>
-  <div>app</div>
-  <!-- <router-view/> -->
+  <router-view/>
   <!-- <Spinner :loading="store.getters['Loading/loadingStatus']" /> -->
 </template>
 

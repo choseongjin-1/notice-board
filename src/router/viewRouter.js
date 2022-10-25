@@ -1,11 +1,11 @@
 export default [
     {
-        path: '/notice',
+        path: '/empty',
         name: 'noticeEmptyLayout',
         component: () => import('../components/layout/EmptyLayout.vue'),
         children: [
             { 
-                path: '/noticeMain',
+                path: '/empty/noticeMain',
                 name: 'noticeMain', 
                 component: () => import('../view/NoticeMain.vue'),
             },

@@ -44,4 +44,4 @@ requireComponent.keys().forEach(fileName => {
 
 app.use(router)
 .use(store)
-//.mount('#Container')
+.mount('#app')

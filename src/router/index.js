@@ -3,7 +3,7 @@ import viewRouter from './viewRouter'
 
 const routes = [
     ...viewRouter,
-    { path: "/", redirect: "/notice/noticeMain" },
+    { path: "/", redirect: "/empty/noticeMain" },
 ]
 
 const router = createRouter({
