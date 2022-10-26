@@ -3,7 +3,7 @@
 		<h2>게시판 리스트</h2>
 
 		<div class="searchWrap">
-			<input type="text" v-model="keyword" @keyup.enter="fnSearch" /><a href="javascript:;" @click="fnSearch" class="btnSearch btn">검색</a>
+			<input type="text" v-model="keyword"/><a @click="searchList()" class="btnSearch btn">검색</a>
 		</div>
 
 		<div class="listWrap">
@@ -65,6 +65,7 @@ export default {
         const instance = getCurrentInstance();
         const store = useStore();
         const list = ref([])
+		const keyword = ref("")
 
         onMounted(() => {
             list.value = store.getters["TestData/testData"]
@@ -83,10 +84,31 @@ export default {
                 name: page,
             })
         }
+		// 키워드 검색
+		const searchList = () => {
+			// 검색단어 없을때 전체리스트
+			if (!keyword.value) {
+				list.value = store.getters["TestData/testData"]
+				return
+			}
+
+			let searchList = []
+			const allList = store.getters["TestData/testData"]
+			
+			for (let i = 0; i < allList.length; i++) {
+				if (allList[i].subject.indexOf(keyword.value) > -1) {
+					searchList.push(allList[i])
+				}
+			}
+
+			list.value = searchList
+		}
 
         return {
             list : list,
+			keyword : keyword,
             mvPage : mvPage,
+			searchList : searchList,
         }
     }
 }
