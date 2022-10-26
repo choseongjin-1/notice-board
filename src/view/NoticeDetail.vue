@@ -15,19 +15,67 @@
 					</tr>
 					<tr>
 						<th>내용</th>
-						<td class="txt_cont" v-html="cont"></td>
+						<td>{{content}}</td>
 					</tr>
 				</table>
 			</form>
 		</div>
 
 		<div class="btnWrap">
-			<a href="javascript:;" @click="fnList" class="btn">목록</a>
-            <a href="javascript:;" @click="fnList" class="btn">수정</a>
-            <a href="javascript:;" @click="fnDeleteProc" class="btnDelete btn">삭제</a>
+			<a href="javascript:;" @click="mvPage('noticeMain')" class="btn">목록</a>
+            <a href="javascript:;" @click="mvPage('noticeModify')" class="btn">수정</a>
+            <a href="javascript:;" @click="deleteData()" class="btnDelete btn">삭제</a>
 		</div>	
 	</div>
 </template>
+
+<script>
+import { onMounted, getCurrentInstance, ref } from "vue";
+import { useStore } from 'vuex';
+
+export default {
+    name : 'noticeDetail',
+    components:{},
+    setup(){
+
+        const instance = getCurrentInstance();
+        const store = useStore()
+        const subject = ref("")
+        const content = ref("")
+
+        onMounted(() => {
+            const testData = store.getters["TestData/testData"]
+            const modifyKey = store.getters["TestData/modifyKey"]
+            subject.value = testData[modifyKey].subject
+            content.value = testData[modifyKey].content
+        });
+
+        const mvPage = (page) => {
+            if (page == "back") {
+                instance.proxy.$router.go(-1)
+                return
+            }
+
+            instance.proxy.$router.push({
+                name: page,
+            })
+        }
+        // 데이터삭제
+        const deleteData = () => {
+            store.commit("TestData/deleteData")
+            alert(subject.value + "이(가) 삭제되었습니다.")
+            mvPage("back")
+        }
+
+        return {
+            subject : subject,
+            content : content,
+            mvPage : mvPage,
+            deleteData : deleteData
+        }
+    }
+}
+</script>
 
 <style scoped>
 	.tbAdd{border-top:1px solid #888;}

@@ -21,8 +21,8 @@
 					<th>날짜</th>
 				</tr>
 				<tr v-for="(item, idx) in list" :key="idx">
-					<td>{{item.key}}</td>
-					<td class="txt_left" @click="mvPage('noticeDetail', item)"><a>{{item.subject}}</a></td>
+					<td>{{idx + 1}}</td>
+					<td class="txt_left" @click="mvPage('noticeDetail', idx)"><a>{{item.subject}}</a></td>
 					<td>{{item.id}}</td>
 					<td>{{item.regDt}}</td>
 				</tr>
@@ -55,6 +55,7 @@
 
 <script>
 import { onMounted, getCurrentInstance, ref } from "vue";
+import { useStore } from "vuex";
 
 export default {
     name : 'noticeMain',
@@ -62,22 +63,24 @@ export default {
     setup(){
 
         const instance = getCurrentInstance();
-        const common = instance.appContext.config.globalProperties.$common;
+        const store = useStore();
         const list = ref([])
 
         onMounted(() => {
-            list.value = common.testData
+            list.value = store.getters["TestData/testData"]
         });
 
-        const mvPage = (page, item) => {
+        const mvPage = (page, idx) => {
             if (page == "back") {
                 instance.proxy.$router.go(-1)
                 return
             }
+            
+            // 수정할 테스트데이터 key 저장
+            store.commit("TestData/setModifyKey", idx)
 
             instance.proxy.$router.push({
                 name: page,
-                params : item,
             })
         }
 
