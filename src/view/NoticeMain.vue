@@ -6,7 +6,7 @@
 			<input type="text" v-model="keyword" @keyup.enter="fnSearch" /><a href="javascript:;" @click="fnSearch" class="btnSearch btn">검색</a>
 		</div>
 
-		<!-- <div class="listWrap">
+		<div class="listWrap">
 			<table class="tbList">
 				<colgroup>
 					<col width="6%" />
@@ -20,11 +20,11 @@
 					<th>아이디</th>
 					<th>날짜</th>
 				</tr>
-				<tr v-for="(row, idx) in list" :key="idx">
-					<td>{{no-idx}}</td>
-					<td class="txt_left"><a href="javascript:;">{{row.subject}}</a></td>
-					<td>{{row.id}}</td>
-					<td>{{row.regdate.substring(0,10)}}</td>
+				<tr v-for="(item, idx) in list" :key="idx">
+					<td>{{item.key}}</td>
+					<td class="txt_left" @click="mvPage('noticeDetail', item)"><a>{{item.subject}}</a></td>
+					<td>{{item.id}}</td>
+					<td>{{item.regDt}}</td>
 				</tr>
 				<tr v-if="list.length == 0">
 					<td colspan="4">데이터가 없습니다.</td>
@@ -32,7 +32,7 @@
 			</table>
 		</div>
 
-		<div class="pagination" v-if="paging.totalCount > 0">
+		<!-- <div class="pagination" v-if="paging.totalCount > 0">
 			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
 			<a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
 			<template v-for=" (n,index) in paginavigation()">
@@ -62,12 +62,14 @@ export default {
     setup(){
 
         const instance = getCurrentInstance();
-        const list = ref(['', '', ''])
+        const common = instance.appContext.config.globalProperties.$common;
+        const list = ref([])
 
         onMounted(() => {
+            list.value = common.testData
         });
 
-        const mvPage = (page) => {
+        const mvPage = (page, item) => {
             if (page == "back") {
                 instance.proxy.$router.go(-1)
                 return
@@ -75,6 +77,7 @@ export default {
 
             instance.proxy.$router.push({
                 name: page,
+                params : item,
             })
         }
 
