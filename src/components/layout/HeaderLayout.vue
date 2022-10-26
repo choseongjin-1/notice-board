@@ -5,7 +5,7 @@
 			<ul class="menu">
 				<li><a @click="mvPage('noticeMain')">게시판</a></li>
                 <li><a @click="mvPage('noticeRegister')">게시판 등록</a></li>
-				<li><a @click="mvPage('noticeModify')">회원정보수정</a></li>
+				<!-- <li><a @click="mvPage('noticeModify')">회원정보수정</a></li> -->
 			</ul>
 		</div>
 	</header>    
@@ -13,6 +13,7 @@
 
 <script>
 import { getCurrentInstance } from "vue";
+import { useStore } from 'vuex';
 
 export default {
     name : 'HeaderLayout',
@@ -20,8 +21,13 @@ export default {
     setup(){
 
         const instance = getCurrentInstance();
+        const store = useStore()
         
         const mvPage = (page) => {
+            if (page == "noticeRegister") {
+                store.commit("TestData/setModifyKey", -1)
+            }
+
             instance.proxy.$router.push({
                 name: page,
             })

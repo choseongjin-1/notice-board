@@ -23,7 +23,7 @@
 
 		<div class="btnWrap">
 			<a href="javascript:;" @click="mvPage('noticeMain')" class="btn">목록</a>
-            <a href="javascript:;" @click="mvPage('noticeModify')" class="btn">수정</a>
+            <a href="javascript:;" @click="mvPage('noticeRegister')" class="btn">수정</a>
             <a href="javascript:;" @click="deleteData()" class="btnDelete btn">삭제</a>
 		</div>	
 	</div>

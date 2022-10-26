@@ -48,7 +48,7 @@
 		</div> -->
 
 		<div class="btnRightWrap">
-			<a @click="mvPage('noticeRegister')" class="btn">등록</a>
+			<a @click="mvPage('noticeRegister', -1)" class="btn">등록</a>
 		</div>
 	</div>
 </template>
