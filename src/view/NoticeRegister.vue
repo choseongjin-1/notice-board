@@ -104,7 +104,6 @@ export default {
         }
     }
 }
-// git merge Test
 </script>
 
 <style scoped>
