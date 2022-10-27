@@ -42,11 +42,10 @@ export default {
             const password = document.getElementById("password").value
 
             http
-                .get(`/login/${username}/${password}`)
+                .get(`/user/${username}/${password}`)
                 .then(({ data }) => {
                     console.log('login', login)
-                    if (data.code == "0000") {
-                        // branch test
+                    if (data.resultCode == "200") {
                         alert("로그인이 완료되었습니다.")
                         mvPage("noticeMain")
                     } else {
