@@ -1,7 +1,7 @@
 <!-- Spinner.vue -->
 <template>
     <div class="loding-area" v-if="loading"></div>
-    <div class="spinner-container">
+    <div class="spinner-container" v-if="loading">
         <div class="spinner" />
     </div>
 </template>
