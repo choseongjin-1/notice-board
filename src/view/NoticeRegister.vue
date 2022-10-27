@@ -49,6 +49,9 @@ export default {
             if (modifyKey.value > -1) {
                 document.getElementById("subject").value = store.getters["TestData/testData"][modifyKey.value].subject
                 document.getElementById("content").value = store.getters["TestData/testData"][modifyKey.value].content
+            } else {
+                document.getElementById("subject").value = ""
+                document.getElementById("content").value = ""
             }
         });
 

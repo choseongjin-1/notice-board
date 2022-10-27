@@ -56,6 +56,10 @@ export default {
                 return
             }
 
+            if (page == "noticeMain") {
+                store.commit("TestData/setModifyKey", -1)
+            }
+
             instance.proxy.$router.push({
                 name: page,
             })

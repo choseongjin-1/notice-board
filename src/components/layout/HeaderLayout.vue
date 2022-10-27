@@ -4,7 +4,7 @@
 		<div class="menuWrap">
 			<ul class="menu">
 				<li><a @click="mvPage('noticeMain')">게시판</a></li>
-                <li><a @click="mvPage('noticeRegister')">게시판 등록</a></li>
+                <li><a @click="mvPage('noticeRegister')" v-show="store.getters['TestData/modifyKey'] == -1">게시판 등록</a></li>
 				<!-- <li><a @click="mvPage('noticeModify')">회원정보수정</a></li> -->
 			</ul>
 		</div>
@@ -34,6 +34,7 @@ export default {
         }
 
         return {
+            store : store,
             mvPage
         }
     }
