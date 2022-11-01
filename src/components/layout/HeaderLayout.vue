@@ -2,7 +2,7 @@
     <header>
 		<h1><a href="#" class="logo"><img alt="Vue logo" src="../../assets/logo.png" width="80"></a></h1>
 		<div class="menuWrap">
-			<ul class="menu">
+			<ul class="menu" v-if="showMenu()">
 				<li><a @click="mvPage('noticeMain')">게시판</a></li>
                 <li><a @click="mvPage('noticeRegister')" v-show="store.getters['TestData/modifyKey'] == -1">게시판 등록</a></li>
 				<!-- <li><a @click="mvPage('noticeModify')">회원정보수정</a></li> -->
@@ -32,10 +32,21 @@ export default {
                 name: page,
             })
         }
+        // 메뉴 가리기
+        const showMenu = () => {
+            const path = instance.proxy.$route.path
+
+            if (path == "/notice/noticeLogin"
+            || path == "/notice/noticeSignUp") {
+                return false
+            }
+            return true
+        }
 
         return {
             store : store,
-            mvPage
+            mvPage : mvPage,
+            showMenu : showMenu,
         }
     }
 }
