@@ -42,7 +42,7 @@
             const signUp = () => {
                 if (!isValid()) return
                 if (!confirm("회원가입 하시겠습니까?")) return
-                
+
                 const param = {
                     userId : document.getElementById("username").value,
                     password : document.getElementById("password").value,
@@ -61,18 +61,34 @@
                         }
                     })
             }
-            // 밸리데이션 todo 형식에 맞는 정규식 적용
+            // 밸리데이션 
             const isValid = () => {
                 if (!document.getElementById("username").value) {
                     alert("아이디를 입력해 주세요.")
                     return false
                 }
-                if (!document.getElementById("password").value) {
+
+                const password = document.getElementById("password").value
+                if (!password) {
                     alert("비밀번호를 입력해 주세요.")
                     return false
                 }
-                if (!document.getElementById("email").value) {
+
+                const regPw = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
+                if (!regPw.test(password)) {
+                    alert("비밀번호는 영문,숫자 조합하여 입력해 주세요. (8-20자)")
+                    return false
+                }
+
+                const email = document.getElementById("email").value
+                if (!email) {
                     alert("이메일을 입력해 주세요.")
+                    return false
+                }
+
+                const regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+                if (!regEmail.test(email)) {
+                    alert("이메일 형식이 올바르지 않습니다.")
                     return false
                 }
                 return true
