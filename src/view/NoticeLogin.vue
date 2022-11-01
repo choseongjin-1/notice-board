@@ -8,6 +8,7 @@
         <input id="password" type="password">
     </div>
     <button @click="login">login</button>
+    <button @click="mvPage('noticeSignUp')">signUp</button>
 </template>
 
 <script>
@@ -71,6 +72,7 @@ export default {
 
         return {
             login : login,
+            mvPage : mvPage,
         }
     }
 }

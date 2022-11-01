@@ -1,10 +1,8 @@
 <!-- Spinner.vue -->
 <template>
     <div class="loding-area" v-if="loading"></div>
-    <div class="loading" v-if="loading">
-        <div class="load">
-            <img src="@/assets/images/loading.gif" alt="loading...">
-        </div>
+    <div class="spinner-container" v-if="loading">
+        <div class="spinner" />
     </div>
 </template>
 <script>
@@ -31,44 +29,28 @@ export default {
     text-align: center;
     z-index: 99;
 }
-.loding-bar {
-    display: inline-block;
-    position: absolute;
-    width: 64px;
-    height: 64px;
-    top: 47%;
-    left: 47%;
-    z-index: 100;
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 240px;
 }
-/* .loding-bar div {
-    display: inline-block;
-    position: absolute;
-    left: 6px;
-    width: 13px;
-    background: #42b883;
-    animation: loding-bar 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+.spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid #e0e0e0;
+  border-bottom: 5px solid #fe9616;
+  animation: spin 1s linear infinite;
+  position: relative;
+  text-align: center;
 }
-.loding-bar div:nth-child(1) {
-    left: 6px;
-    animation-delay: -0.24s;
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
-.loding-bar div:nth-child(2) {
-    left: 26px;
-    animation-delay: -0.12s;
-}
-.loding-bar div:nth-child(3) {
-    left: 45px;
-    animation-delay: 0;
-}
-@keyframes loding-bar {
-    0% {
-        top: 6px;
-        height: 51px;
-    }
-    50%,
-    100% {
-        top: 19px;
-        height: 25px;
-    }
-} */
 </style>

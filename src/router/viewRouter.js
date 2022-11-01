@@ -10,6 +10,11 @@ export default [
                 component: () => import('../view/NoticeLogin.vue'),
             },
             { 
+                path: '/notice/noticeSignUp',
+                name: 'noticeSignUp', 
+                component: () => import('../view/NoticeSignUp.vue'),
+            },
+            { 
                 path: '/notice/noticeMain',
                 name: 'noticeMain', 
                 component: () => import('../view/NoticeMain.vue'),
