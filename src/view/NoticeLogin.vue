@@ -23,6 +23,7 @@ export default {
         const http = instance.appContext.config.globalProperties.$http;
 
         onMounted(() => {
+            console.log("aws code commit test!!");
         });
 
         const mvPage = (page) => {
