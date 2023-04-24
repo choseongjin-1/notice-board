@@ -4,7 +4,7 @@ import {common} from './view/common';
 import store from './store/index'
 
 const axiosInstance = axios.create({
-    baseURL: "http://13.125.252.38:8080/ROOT/notice-api",
+    baseURL: "http://13.125.252.38:8080",
     header:{
                 'Access-Control-Allow-Origin': '*',
                 'Content-Type': 'application/json; charset = utf-8'
