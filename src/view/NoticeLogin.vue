@@ -1,11 +1,11 @@
 <template>
     <div>
         <label for="username">id: </label>
-        <input id="username" type="text">
+        <input id="username" type="text" placeholder="csj">
     </div>
     <div>
         <label for="password">pw: </label>
-        <input id="password" type="password">
+        <input id="password" type="password" placeholder="1">
     </div>
     <button @click="login">login</button>
     <button @click="mvPage('noticeSignUp')">signUp</button>
@@ -23,7 +23,7 @@ export default {
         const http = instance.appContext.config.globalProperties.$http;
 
         onMounted(() => {
-            console.log("aws code commit test!!");
+            console.log(process.env.NODE_ENV == "development");
         });
 
         const mvPage = (page) => {

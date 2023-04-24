@@ -8,4 +8,8 @@ export const common = {
   getToday() {
     return dayjs().format("YYYY-MM-DD")
   },
+  // 운영모드 확인
+  isDev() {
+    return process.env.NODE_ENV == "development"
+  }
 };
