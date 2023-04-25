@@ -44,7 +44,7 @@ export default {
             const password = document.getElementById("password").value
 
             http
-                .get(`/login/${username}/${password}`)
+                .get(`/users/${username}/${password}`)
                 .then(({ data }) => {
                     console.log('login', login)
                     if (data.resultCode == "0000") {

@@ -11,5 +11,16 @@ export const common = {
   // 운영모드 확인
   isDev() {
     return process.env.NODE_ENV == "development"
+  },
+  // 로그 개발일때만
+  log(msg, level) {
+    if (!this.isDev()) return
+
+    let lv = level ? level : "d"
+
+    if (lv == "d") console.log(msg)
+    if (lv == "i") console.info(msg)
+    if (lv == "w") console.warn(msg)
+    if (lv == "e") console.error(msg)
   }
 };
