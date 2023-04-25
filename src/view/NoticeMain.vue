@@ -63,13 +63,27 @@ export default {
     setup(){
 
         const instance = getCurrentInstance();
+		const http = instance.appContext.config.globalProperties.$http;
         const store = useStore();
         const list = ref([])
 		const keyword = ref("")
 
         onMounted(() => {
-            list.value = store.getters["TestData/testData"]
+			getList()
         });
+
+		// 목록 조회 api 호출
+		const getList = () => {
+			http
+                .get(`/list`)
+                .then(({ data }) => {
+                    if (data.length > 0) {
+						list.value = data
+                    } else {
+                        alert("목록조회에 실패하였습니다.")
+                    }
+                })
+		}
 
         const mvPage = (page, idx) => {
             if (page == "back") {
