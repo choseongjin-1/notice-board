@@ -1,8 +1,7 @@
 <template>
     <div>
         <label for="username">id: </label>
-        <input id="username" type="text">
-        <button id="checkId" @click="checkDuplicateId">중복체크</button>
+        <input id="username" type="text" @blur="checkDuplicateId($event.target.value)">
     </div>
     <div>
         <label for="password">pw: </label>
@@ -15,12 +14,18 @@
     <div>
         <label for="email">email: </label>
         <input id="email" type="text">
+        <button id="autificateBtn" @click="autificateEmail">이메일 인증</button>
+    </div>
+    <div>
+        <label for="number">number: </label>
+        <input id="confirmNum" type="text">
+        <button id="confirmBtn" @click="confirmNumber">인증번호확인</button>
     </div>
     <button @click="signUp">signUp</button>
 </template>
 
 <script>
-    import { onMounted, getCurrentInstance } from "vue";
+    import { onMounted, getCurrentInstance, reactive } from "vue";
     
     export default {
         name : 'NoticeSignUp',
@@ -29,6 +34,10 @@
     
             const instance = getCurrentInstance();
             const http = instance.appContext.config.globalProperties.$http;
+            const state = reactive({
+                number : "",
+                isConfirm : "",
+            })
     
             onMounted(() => {
             });
@@ -68,9 +77,7 @@
                     })
             }
             // 아이디 중복체크
-            const checkDuplicateId = () => {
-                const userId = document.getElementById("username").value
-
+            const checkDuplicateId = (userId) => {
                 if (!userId) {
                     alert("아이디를 입력해 주세요.")
                     return
@@ -86,6 +93,43 @@
                             alert("이미 사용중인 아이디 입니다.")
                         }
                     })
+            }
+            const autificateEmail = () => {
+                state.isConfirm = false
+                const email = document.getElementById("email").value
+
+                if (!email) {
+                    alert("이메일을 입력해 주세요.")
+                    return
+                }
+
+                http
+                    .get(`/autificateEmail/${email}`)
+                    .then(({ data }) => {
+
+                        if (data.code == "0000") {
+                            alert("인증번호 발송이 완료되었습니다.")
+                            console.log(data.rdata);
+                            state.number = data.rdata
+                        } else {
+                            alert("인증번호 발송에 실패하였습니다.")
+                        }
+                    })
+            }
+            // 이메일 인증확인
+            const confirmNumber = () => {
+                const confirmInput = document.getElementById("confirmNum").value
+                state.isConfirm = false
+
+                if (!state.number && !state.isConfirm) {
+                    alert("먼저 이메일을 발송해 주세요.")
+                    return
+                }
+
+                if (state.number == confirmInput) {
+                    alert("이메일 인증이 완료되었습니다.")
+                    state.isConfirm = true
+                }
             }
             // 밸리데이션 
             const isValid = () => {
@@ -117,6 +161,11 @@
                     alert("이메일 형식이 올바르지 않습니다.")
                     return false
                 }
+
+                if (!state.isConfirm) {
+                    alert("먼저 이메일을 인증해 주세요.")
+                    return false
+                }
                 return true
             }
     
@@ -124,6 +173,8 @@
                 mvPage : mvPage,
                 signUp : signUp,
                 checkDuplicateId : checkDuplicateId,
+                autificateEmail : autificateEmail,
+                confirmNumber : confirmNumber
             }
         }
     }
