@@ -2,20 +2,25 @@
     <div>
         <label for="username">id: </label>
         <input id="username" type="text">
+        <button id="checkId" @click="checkDuplicateId">중복체크</button>
     </div>
     <div>
         <label for="password">pw: </label>
         <input id="password" type="password">
     </div>
     <div>
-        <label for="password">email: </label>
+        <label for="userNm">name: </label>
+        <input id="userNm" type="text">
+    </div>
+    <div>
+        <label for="email">email: </label>
         <input id="email" type="text">
     </div>
     <button @click="signUp">signUp</button>
 </template>
 
 <script>
-    import { onMounted, getCurrentInstance} from "vue";
+    import { onMounted, getCurrentInstance } from "vue";
     
     export default {
         name : 'NoticeSignUp',
@@ -40,24 +45,45 @@
             }
             // 회원가입
             const signUp = () => {
-                if (!isValid()) return
+                //if (!isValid()) return
                 if (!confirm("회원가입 하시겠습니까?")) return
 
                 const param = {
                     userId : document.getElementById("username").value,
                     password : document.getElementById("password").value,
+                    userNm : document.getElementById("userNm").value,
                     email : document.getElementById("email").value
                 }
 
                 http
-                    .post('/user', param)
+                    .post('/signup', param)
                     .then(({ data }) => {
-                        console.log('login', login)
-                        if (data.resultCode == "200") {
+
+                        if (data.code == "0000") {
                             alert("회원가입이 완료되었습니다.")
                             mvPage("noticeLogin")
                         } else {
                             alert("회원가입에 실패하였습니다. 관리자에게 문의해주세요.")
+                        }
+                    })
+            }
+            // 아이디 중복체크
+            const checkDuplicateId = () => {
+                const userId = document.getElementById("username").value
+
+                if (!userId) {
+                    alert("아이디를 입력해 주세요.")
+                    return
+                }
+
+                http
+                    .get(`/checkDuplicateId/${userId}`)
+                    .then(({ data }) => {
+
+                        if (data.code == "0000") {
+                            alert("사용가능한 아이디 입니다.")
+                        } else {
+                            alert("이미 사용중인 아이디 입니다.")
                         }
                     })
             }
@@ -97,6 +123,7 @@
             return {
                 mvPage : mvPage,
                 signUp : signUp,
+                checkDuplicateId : checkDuplicateId,
             }
         }
     }

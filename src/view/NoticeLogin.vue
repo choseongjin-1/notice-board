@@ -1,11 +1,11 @@
 <template>
     <div>
         <label for="username">id: </label>
-        <input id="username" type="text" placeholder="csj">
+        <input id="username" type="text" value="sjcho">
     </div>
     <div>
         <label for="password">pw: </label>
-        <input id="password" type="password" placeholder="1">
+        <input id="password" type="password" value="1234">
     </div>
     <button @click="login">login</button>
     <button @click="mvPage('noticeSignUp')">signUp</button>
@@ -43,11 +43,16 @@ export default {
             const username = document.getElementById("username").value
             const password = document.getElementById("password").value
 
+            const param = {
+                username : username,
+                password : password
+            }
+
             http
-                .get(`/users/${username}/${password}`)
+                .post(`/signin`, param)
                 .then(({ data }) => {
-                    console.log('login', login)
-                    if (data.resultCode == "0000") {
+                    console.log('login', data)
+                    if (data.code == "0000") {
                         alert("로그인이 완료되었습니다.")
                         mvPage("noticeMain")
                     } else {
