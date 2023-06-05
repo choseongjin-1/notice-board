@@ -53,6 +53,8 @@ export default {
                 .then(({ data }) => {
                     console.log('login', data)
                     if (data.code == "0000") {
+                        http.defaults.headers.common['Authorization'] = 'Bearer '+data.rdata
+                        console.log(http.defaults.headers.common['Authorization']);
                         alert("로그인이 완료되었습니다.")
                         mvPage("noticeMain")
                     } else {
