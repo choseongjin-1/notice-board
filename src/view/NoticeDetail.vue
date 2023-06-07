@@ -44,10 +44,9 @@ export default {
         const content = ref("")
 
         onMounted(() => {
-            const testData = store.getters["TestData/testData"]
-            const modifyKey = store.getters["TestData/modifyKey"]
-            subject.value = testData[modifyKey].subject
-            content.value = testData[modifyKey].content
+            const params = history.state
+            subject.value = params.listSubject
+            content.value = params.listContent
         });
 
         const mvPage = (page) => {

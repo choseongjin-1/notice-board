@@ -22,7 +22,7 @@
 				</tr>
 				<tr v-for="(item, idx) in list" :key="idx">
 					<td>{{idx + 1}}</td>
-					<td @click="mvPage('noticeDetail', idx)"><a>{{item.listSubject}}</a></td>
+					<td @click="mvPage('noticeDetail', item.listSrno)"><a>{{item.listSubject}}</a></td>
 					<td>{{item.regId}}</td>
 					<td>{{item.regDt}}</td>
 				</tr>
@@ -88,18 +88,28 @@ export default {
 
 		}
 
-        const mvPage = (page, idx) => {
+        const mvPage = (page, srno) => {
+
             if (page == "back") {
                 instance.proxy.$router.go(-1)
                 return
             }
-            
-            // 수정할 테스트데이터 key 저장
-            store.commit("TestData/setModifyKey", idx)
+
+			const mappedData = list.value.map(item => item);
+			let item = {}
+
+			for (let i = 0; i < mappedData.length; i++) {
+				if (mappedData[i].listSrno == srno) {
+					item = mappedData[i]
+					break
+				}
+			}
 
             instance.proxy.$router.push({
+				state : item,
                 name: page,
             })
+			
         }
 
         return {
