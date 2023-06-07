@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>게시판 {{modifyKey == -1 ? "등록" : "수정"}}</h1>
+		<h1>게시판 등록</h1>
 
 		<div class="AddWrap">
 			<form>
@@ -23,13 +23,13 @@
 
 		<div class="btnWrap">
 			<a href="javascript:;" @click="mvPage('noticeMain')" class="btn">목록</a>
-			<a href="javascript:;" @click="setData()" class="btnAdd btn">{{modifyKey == -1 ? "등록" : "수정"}}</a>
+			<a href="javascript:;" @click="insertData()" class="btnAdd btn">등록</a>
 		</div>	
 	</div>
 </template>
 
 <script>
-import { onMounted, getCurrentInstance, ref } from "vue";
+import { getCurrentInstance } from "vue";
 import { useStore } from 'vuex';
 
 export default {
@@ -38,22 +38,8 @@ export default {
     setup(){
 
         const instance = getCurrentInstance();
-        const common = instance.appContext.config.globalProperties.$common;
+        const http = instance.appContext.config.globalProperties.$http;
         const store = useStore()
-        const modifyKey = ref(-1)
-
-        onMounted(() => {
-            modifyKey.value = store.getters["TestData/modifyKey"] > -1 ? store.getters["TestData/modifyKey"] : -1
-            console.log('modifyKey.value', modifyKey.value);
-
-            if (modifyKey.value > -1) {
-                document.getElementById("subject").value = store.getters["TestData/testData"][modifyKey.value].subject
-                document.getElementById("content").value = store.getters["TestData/testData"][modifyKey.value].content
-            } else {
-                document.getElementById("subject").value = ""
-                document.getElementById("content").value = ""
-            }
-        });
 
         const mvPage = (page) => {
             if (page == "back") {
@@ -66,25 +52,26 @@ export default {
             })
         }
         // 리스트 등록, 수정
-        const setData = () => {
+        const insertData = () => {
             if (!isValid()) return
 
-            const data = {
-                    subject : document.getElementById("subject").value,
-                    content : document.getElementById("content").value,
+            const param = {
+                    userSrno : store.getters["Login/getUserSrno"],
+                    listSubject : document.getElementById("subject").value,
+                    listContent : document.getElementById("content").value,
                 }
 
-            if (modifyKey.value == -1) {
-                data.no = store.getters["TestData/testData"].length + 1
-                data.id = "seongjin"
-                data.regDt = common.getToday()
-            }
-
-            store.commit("TestData/setData", data)
-            store.commit("TestData/setModifyKey", -1)
-            const msg = (modifyKey.value == -1 ? "등록" : "수정") + " 되었습니다."
-            alert(msg)
-            mvPage("noticeMain")
+            http
+                .post("/insertList", param)
+                .then(({ data }) => {
+                    console.log("code", data.code);
+                    if (data.code == "0000") {
+                        alert("게시물 등록이 완료되었습니다.")
+                        mvPage("noticeMain")
+                    } else {
+                        alert("게시물 등록 실패 관리자에게 문의하여주세요.")
+                    }
+                })
         }
         // 밸리데이션
         const isValid = () => {
@@ -101,9 +88,8 @@ export default {
         }
 
         return {
-            modifyKey : modifyKey,
             mvPage : mvPage,
-            setData : setData,
+            insertData : insertData,
         }
     }
 }

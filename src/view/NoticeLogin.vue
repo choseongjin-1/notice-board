@@ -13,6 +13,7 @@
 
 <script>
 import { onMounted, getCurrentInstance} from "vue";
+import { useStore } from "vuex";
 
 export default {
     name : 'NoticeLogin',
@@ -21,6 +22,7 @@ export default {
 
         const instance = getCurrentInstance();
         const http = instance.appContext.config.globalProperties.$http;
+        const store = useStore();
 
         onMounted(() => {
             console.log(process.env.NODE_ENV == "development");
@@ -53,8 +55,8 @@ export default {
                 .then(({ data }) => {
                     console.log('login', data)
                     if (data.code == "0000") {
-                        http.defaults.headers.common['Authorization'] = 'Bearer '+data.rdata
-                        console.log(http.defaults.headers.common['Authorization']);
+                        http.defaults.headers.common['Authorization'] = 'Bearer '+data.rdata.webToken
+                        store.commit("Login/setUserSrno", data.rdata.userSrno)
                         alert("로그인이 완료되었습니다.")
                         mvPage("noticeMain")
                     } else {

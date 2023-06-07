@@ -22,8 +22,8 @@
 				</tr>
 				<tr v-for="(item, idx) in list" :key="idx">
 					<td>{{idx + 1}}</td>
-					<td class="txt_left" @click="mvPage('noticeDetail', idx)"><a>{{item.subject}}</a></td>
-					<td>{{item.id}}</td>
+					<td @click="mvPage('noticeDetail', idx)"><a>{{item.listSubject}}</a></td>
+					<td>{{item.regId}}</td>
 					<td>{{item.regDt}}</td>
 				</tr>
 				<tr v-if="list.length == 0">
@@ -67,20 +67,21 @@ export default {
         const store = useStore();
         const list = ref([])
 		const keyword = ref("")
+		const userSrno = ref(store.getters["Login/getUserSrno"])
 
         onMounted(() => {
-			getList()
+			selectList()
         });
 
 		// 목록 조회 api 호출
-		const getList = () => {
+		const selectList = () => {
 			http
-                .get(`/list`)
+                .get(`/selectList/${userSrno.value}`)
                 .then(({ data }) => {
                     if (data.length > 0) {
 						list.value = data
                     } else {
-                        alert("목록조회에 실패하였습니다.")
+                        alert("등록된 게시물이 없습니다.")
                     }
                 })
 		}
