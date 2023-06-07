@@ -3,7 +3,7 @@
 		<h2>게시판 리스트</h2>
 
 		<div class="searchWrap">
-			<input type="text" v-model="keyword"/><a @click="searchList()" class="btnSearch btn">검색</a>
+			<input type="text" id="keyword"/><a @click="selectList()" class="btnSearch btn">검색</a>
 		</div>
 
 		<div class="listWrap">
@@ -27,7 +27,7 @@
 					<td>{{item.regDt}}</td>
 				</tr>
 				<tr v-if="list.length == 0">
-					<td colspan="4">데이터가 없습니다.</td>
+					<td colspan="4">조회 결과가 없습니다.</td>
 				</tr>
 			</table>
 		</div>
@@ -66,24 +66,26 @@ export default {
 		const http = instance.appContext.config.globalProperties.$http;
         const store = useStore();
         const list = ref([])
-		const keyword = ref("")
-		const userSrno = ref(store.getters["Login/getUserSrno"])
+		//const userSrno = ref(store.getters["Login/getUserSrno"])
 
         onMounted(() => {
-			selectList()
+			selectList("init")
         });
 
 		// 목록 조회 api 호출
 		const selectList = () => {
+			const keyword = document.getElementById("keyword").value
+
 			http
-                .get(`/selectList/${userSrno.value}`)
+                .get(`/selectList/${ keyword || "isEmptyKeyword!!" }`)
                 .then(({ data }) => {
                     if (data.length > 0) {
 						list.value = data
                     } else {
-                        alert("등록된 게시물이 없습니다.")
+						list.value = []
                     }
                 })
+
 		}
 
         const mvPage = (page, idx) => {
@@ -99,31 +101,11 @@ export default {
                 name: page,
             })
         }
-		// 키워드 검색
-		const searchList = () => {
-			// 검색단어 없을때 전체리스트
-			if (!keyword.value) {
-				list.value = store.getters["TestData/testData"]
-				return
-			}
-
-			let searchList = []
-			const allList = store.getters["TestData/testData"]
-			
-			for (let i = 0; i < allList.length; i++) {
-				if (allList[i].subject.indexOf(keyword.value) > -1) {
-					searchList.push(allList[i])
-				}
-			}
-
-			list.value = searchList
-		}
 
         return {
             list : list,
-			keyword : keyword,
             mvPage : mvPage,
-			searchList : searchList,
+			selectList : selectList,
         }
     }
 }
