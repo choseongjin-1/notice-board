@@ -23,8 +23,8 @@
 
 		<div class="btnWrap">
 			<a href="javascript:;" @click="mvPage('noticeMain')" class="btn">목록</a>
-            <a href="javascript:;" @click="mvPage('noticeRegister')" class="btn">수정</a>
-            <a href="javascript:;" @click="deleteData()" class="btnDelete btn">삭제</a>
+            <a href="javascript:;" @click="mvPage('noticeRegister')" v-if="isSameUser" class="btn">수정</a>
+            <a href="javascript:;" @click="deleteList()" v-if="isSameUser" class="btnDelete btn">삭제</a>
 		</div>	
 	</div>
 </template>
@@ -39,14 +39,19 @@ export default {
     setup(){
 
         const instance = getCurrentInstance();
+        const http = instance.appContext.config.globalProperties.$http;
         const store = useStore()
         const subject = ref("")
         const content = ref("")
+        const listSrno = ref("")
+        const isSameUser = ref(true)
 
         onMounted(() => {
             const params = history.state
             subject.value = params.listSubject
             content.value = params.listContent
+            listSrno.value = params.listSrno
+            isSameUser.value = params.regId == store.getters["Login/getUserId"]
         });
 
         const mvPage = (page) => {
@@ -55,26 +60,38 @@ export default {
                 return
             }
 
-            if (page == "noticeMain") {
-                store.commit("TestData/setModifyKey", -1)
-            }
-
             instance.proxy.$router.push({
                 name: page,
             })
         }
         // 데이터삭제
-        const deleteData = () => {
-            store.commit("TestData/deleteData")
-            alert(subject.value + "이(가) 삭제되었습니다.")
-            mvPage("back")
+        const deleteList = () => {
+
+            const param = {
+                userSrno : store.getters["Login/getUserSrno"],
+                listSrno : listSrno.value
+            }
+
+            console.log("deleteParam");
+            
+            http
+                .post("/deleteList", param)
+                .then(({ data }) => {
+                    if (data.code == "0000") {
+                        alert("삭제가 완료되었습니다.")
+                        mvPage("back")
+                        return
+                    }
+                    alert("삭제에 실패하였습니다. 관리자에게 문의하여주세요.")        
+                })
         }
 
         return {
             subject : subject,
             content : content,
+            isSameUser : isSameUser,
             mvPage : mvPage,
-            deleteData : deleteData
+            deleteList : deleteList
         }
     }
 }

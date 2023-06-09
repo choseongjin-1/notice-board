@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { getCurrentInstance } from "vue";
+import { getCurrentInstance, onMounted } from "vue";
 import { useStore } from 'vuex';
 
 export default {
@@ -40,6 +40,11 @@ export default {
         const instance = getCurrentInstance();
         const http = instance.appContext.config.globalProperties.$http;
         const store = useStore()
+
+        onMounted(() => {
+            document.getElementById("subject").value = ""
+            document.getElementById("content").value = ""
+        })
 
         const mvPage = (page) => {
             if (page == "back") {

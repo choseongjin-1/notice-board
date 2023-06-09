@@ -56,7 +56,10 @@ export default {
                     console.log('login', data)
                     if (data.code == "0000") {
                         http.defaults.headers.common['Authorization'] = 'Bearer '+data.rdata.webToken
+
                         store.commit("Login/setUserSrno", data.rdata.userSrno)
+                        store.commit("Login/setUserId", data.rdata.userId)
+
                         alert("로그인이 완료되었습니다.")
                         mvPage("noticeMain")
                     } else {
