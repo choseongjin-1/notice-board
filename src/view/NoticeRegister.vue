@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>게시판 등록</h1>
+		<h1>게시판 {{ isModify ? "수정" : "등록" }}</h1>
 
 		<div class="AddWrap">
 			<form>
@@ -23,13 +23,14 @@
 
 		<div class="btnWrap">
 			<a href="javascript:;" @click="mvPage('noticeMain')" class="btn">목록</a>
-			<a href="javascript:;" @click="insertData()" class="btnAdd btn">등록</a>
+			<a href="javascript:;" @click="insertList()" v-if="!isModify" class="btnAdd btn">등록</a>
+            <a href="javascript:;" @click="updateList()" v-if="isModify" class="btnAdd btn">수정</a>
 		</div>	
 	</div>
 </template>
 
 <script>
-import { getCurrentInstance, onMounted } from "vue";
+import { getCurrentInstance, onMounted, ref } from "vue";
 import { useStore } from 'vuex';
 
 export default {
@@ -40,10 +41,18 @@ export default {
         const instance = getCurrentInstance();
         const http = instance.appContext.config.globalProperties.$http;
         const store = useStore()
+        const isModify = ref(false)
 
         onMounted(() => {
-            document.getElementById("subject").value = ""
-            document.getElementById("content").value = ""
+            console.log("state ==> ", history.state);
+            const state = history.state
+            const subject = document.getElementById("subject")
+            const content = document.getElementById("content")
+            isModify.value = state.listSrno
+            
+            subject.value = isModify.value ? state.listSubject : ""
+            content.value = isModify.value ? state.listContent : ""
+
         })
 
         const mvPage = (page) => {
@@ -56,8 +65,8 @@ export default {
                 name: page,
             })
         }
-        // 리스트 등록, 수정
-        const insertData = () => {
+        // 리스트 등록
+        const insertList = () => {
             if (!isValid()) return
 
             const param = {
@@ -78,6 +87,29 @@ export default {
                     }
                 })
         }
+        // 리스트 수정
+        const updateList = () => {
+            if (!isValid()) return
+
+            const param = {
+                    userSrno : store.getters["Login/getUserSrno"],
+                    listSrno : history.state.listSrno,
+                    listSubject : document.getElementById("subject").value,
+                    listContent : document.getElementById("content").value,
+                }
+
+            http
+                .post("/updateList", param)
+                .then(({ data }) => {
+                    console.log("code", data.code);
+                    if (data.code == "0000") {
+                        alert("게시물 수정이 완료되었습니다.")
+                        mvPage("noticeMain")
+                    } else {
+                        alert("게시물 수정 실패 관리자에게 문의하여주세요.")
+                    }
+                })
+        }
         // 밸리데이션
         const isValid = () => {
             if (!document.getElementById("subject").value) {
@@ -93,8 +125,10 @@ export default {
         }
 
         return {
+            isModify : isModify,
             mvPage : mvPage,
-            insertData : insertData,
+            insertList : insertList,
+            updateList : updateList,
         }
     }
 }

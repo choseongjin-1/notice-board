@@ -60,8 +60,18 @@ export default {
                 return
             }
 
+            let state = {}
+            if (page == "noticeRegister") {
+                state = {
+                    listSrno : listSrno.value,
+                    listSubject : subject.value,
+                    listContent : content.value
+                }
+            }
+
             instance.proxy.$router.push({
                 name: page,
+                state : state
             })
         }
         // 데이터삭제
