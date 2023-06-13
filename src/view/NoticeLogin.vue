@@ -1,15 +1,23 @@
 <template>
-    <div>
-        <label for="username">id: </label>
-        <input id="username" type="text" value="sjcho">
+    <div class="login-form">
+      <h2>Login</h2>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" value="sjcho" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" value="1234"  required>
+      </div>
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox">
+          Remember me
+        </label>
+      </div>
+      <button class="btn-login" @click="login">Login</button>
     </div>
-    <div>
-        <label for="password">pw: </label>
-        <input id="password" type="password" value="1234">
-    </div>
-    <button @click="login">login</button>
-    <button @click="mvPage('noticeSignUp')">signUp</button>
-</template>
+  </template>
 
 <script>
 import { onMounted, getCurrentInstance} from "vue";
@@ -26,8 +34,18 @@ export default {
 
         onMounted(() => {
             console.log(process.env.NODE_ENV == "development");
+            autoLogin()
         });
 
+        // 자동로그인
+        const autoLogin = () => {
+            const webToken = localStorage.getItem("webToken")
+            if (webToken) {
+                http.defaults.headers.common['Authorization'] = 'Bearer '+webToken
+                mvPage("noticeMain")
+                return
+            }
+        }
         const mvPage = (page) => {
             if (page == "back") {
                 instance.proxy.$router.go(-1)
@@ -56,6 +74,7 @@ export default {
                     console.log('login', data)
                     if (data.code == "0000") {
                         http.defaults.headers.common['Authorization'] = 'Bearer '+data.rdata.webToken
+                        localStorage.setItem("webToken", data.rdata.webToken)
 
                         store.commit("Login/setUserSrno", data.rdata.userSrno)
                         store.commit("Login/setUserId", data.rdata.userId)
@@ -90,3 +109,54 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+/* CSS 스타일링 */
+.login-form {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.form-group .checkbox-label {
+  font-size: 14px;
+}
+
+.form-group .checkbox-label input {
+  margin-right: 5px;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+}
+</style>

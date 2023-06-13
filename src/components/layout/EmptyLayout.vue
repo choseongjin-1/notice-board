@@ -1,17 +1,11 @@
 <template>
-    <Header></Header>
     <router-view></router-view>
-    <Footer></Footer>
 </template>
 
 <script>
-import Header from './HeaderLayout.vue';
-import Footer from './BottomLayout.vue';
 
 export default {
   components: {
-    Header,
-    Footer,
   }
 }
 </script>
