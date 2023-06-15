@@ -11,8 +11,8 @@
       </div>
       <div class="form-group">
         <label class="checkbox-label">
-          <input type="checkbox">
-          Remember me
+          <input type="checkbox" id="autoLogin" checked>
+          auto login
         </label>
       </div>
       <button class="btn-login" @click="login">Login</button>
@@ -42,8 +42,14 @@ export default {
             const webToken = localStorage.getItem("webToken")
             if (webToken) {
                 http.defaults.headers.common['Authorization'] = 'Bearer '+webToken
-                mvPage("noticeMain")
-                return
+
+                http
+                    .get("/selectUserByToken")
+                    .then(({ data }) => {
+                        store.commit("Login/setUserSrno", data.rdata.userSrno)
+                        store.commit("Login/setUserId", data.rdata.userId)
+                        mvPage("noticeMain")
+                    })
             }
         }
         const mvPage = (page) => {
@@ -74,7 +80,11 @@ export default {
                     console.log('login', data)
                     if (data.code == "0000") {
                         http.defaults.headers.common['Authorization'] = 'Bearer '+data.rdata.webToken
-                        localStorage.setItem("webToken", data.rdata.webToken)
+
+                        const isAuatoLogin = document.getElementById("autoLogin").checked
+                        if (isAuatoLogin) {
+                            localStorage.setItem("webToken", data.rdata.webToken)
+                        }
 
                         store.commit("Login/setUserSrno", data.rdata.userSrno)
                         store.commit("Login/setUserId", data.rdata.userId)

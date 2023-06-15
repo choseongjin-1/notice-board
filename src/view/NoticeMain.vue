@@ -1,55 +1,19 @@
 <template>
 	<div>
-		<h2>게시판 리스트</h2>
-
-		<div class="searchWrap">
-			<input type="text" id="keyword"/><a @click="selectList()" class="btnSearch btn">검색</a>
+		<h2>List</h2>
+		<div v-if="list.length === 0">
+			No items found.
 		</div>
-
-		<div class="listWrap">
-			<table class="tbList">
-				<colgroup>
-					<col width="6%" />
-					<col width="*" />
-					<col width="10%" />
-					<col width="15%" />
-				</colgroup>
-				<tr>
-					<th>no</th>
-					<th>제목</th>
-					<th>아이디</th>
-					<th>날짜</th>
-				</tr>
-				<tr v-for="(item, idx) in list" :key="idx">
-					<td>{{idx + 1}}</td>
-					<td @click="mvPage('noticeDetail', item)"><a>{{item.listSubject}}</a></td>
-					<td>{{item.regId}}</td>
-					<td>{{item.regDt}}</td>
-				</tr>
-				<tr v-if="list.length == 0">
-					<td colspan="4">조회 결과가 없습니다.</td>
-				</tr>
-			</table>
-		</div>
-
-		<!-- <div class="pagination" v-if="paging.totalCount > 0">
-			<a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
-			<a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
-			<template v-for=" (n,index) in paginavigation()">
-				<template v-if="paging.page==n">
-					<strong :key="index">{{n}}</strong>
-				</template>
-				<template v-else>
-					<a href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{n}}</a>
-				</template>
-			</template>
-			<a href="javascript:;" v-if="paging.total_page > paging.end_page" @click="fnPage(`${paging.end_page+1}`)"  class="next">&gt;</a>
-			<a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
-		</div> -->
-
-		<div class="btnRightWrap">
-			<a @click="mvPage('noticeRegister', -1)" class="btn">등록</a>
-		</div>
+		<ul class="card-list" v-else>
+			<li v-for="(item, idx) in list" :key="idx" class="card" @click="mvPage('noticeDetail', item)">
+			<div class="card-content">
+				<h3>{{ item.listSubject }}</h3>
+				<p>ID: {{ item.regId }}</p>
+				<p>Date: {{ item.regDt }}</p>
+			</div>
+			</li>
+		</ul>
+		<button class="btn-add" @click="mvPage('noticeRegister', -1)">Add Item</button>
 	</div>
 </template>
 
@@ -74,7 +38,7 @@ export default {
 
 		// 목록 조회 api 호출
 		const selectList = () => {
-			const keyword = document.getElementById("keyword").value
+			const keyword = ""
 
 			http
                 .get(`/selectList/${ keyword || "isEmptyKeyword!!" }`)
@@ -112,16 +76,79 @@ export default {
 </script>
 
 <style scoped>
-	.searchWrap{border:1px solid #888; border-radius:5px; text-align:center; padding:20px 0; margin-bottom:40px;}
-	.searchWrap input{width:60%; height:36px; border-radius:3px; padding:0 10px; border:1px solid #888;}
-	.searchWrap .btnSearch{display:inline-block; margin-left:10px;}
-	.tbList th{border-top:1px solid #888;}
-	.tbList th, .tbList td{border-bottom:1px solid #eee; padding:5px 0;}
-	.tbList td.txt_left{text-align:left;}
-	.btnRightWrap{text-align:right; margin:10px 0 0 0;}
+h2 {
+  text-align: center;
+  margin-top: 20px;
+}
 
-	.pagination{margin:20px 0 0 0; text-align:center;}
-	.first, .prev, .next, .last{border:1px solid #666; margin:0 5px;}
-	.pagination span{display:inline-block; padding:0 5px; color:#333;}
-	.pagination a{text-decoration:none; display:inline-blcok; padding:0 5px; color:#666;}
+.card-list {
+  list-style: none;
+  padding: 0;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  padding: 16px;
+}
+
+.card-content {
+  flex-grow: 1;
+}
+
+.card-content h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-content p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+.btn-add {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 16px auto;
+  padding: 12px 16px;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+.btn-edit {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .card-content h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .card-content p {
+    font-size: 16px;
+  }
+}
 </style>
