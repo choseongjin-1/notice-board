@@ -5,12 +5,6 @@
             <p><strong>제목:</strong> {{subject}}</p>
             <p><strong>내용:</strong> {{content}}</p>
         </div>
-    
-        <div class="button-container">
-            <button class="btn-list" @click="mvPage('noticeMain')">목록</button>
-            <button class="btn-edit" @click="mvPage('noticeRegister')" v-if="isSameUser">수정</button>
-            <button class="btn-delete" @click="deleteList()" v-if="isSameUser">삭제</button>
-        </div>
   
         <div class="comment-container">
             <h3>댓글</h3>
@@ -25,6 +19,12 @@
             </ul>
             <input class="comment-input" type="text" id="commentInput" placeholder="댓글을 입력해 주세요." required>
             <button class="btn-add-comment" @click="insertComment()">댓글 등록</button>
+        </div>
+
+        <div class="button-container">
+            <button class="btn-list" @click="mvPage('noticeMain')">목록</button>
+            <button class="btn-edit" @click="mvPage('noticeRegister')" v-if="isSameUser">수정</button>
+            <button class="btn-delete" @click="deleteList()" v-if="isSameUser">삭제</button>
         </div>
     </div>
 </template>
