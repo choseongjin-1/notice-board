@@ -74,7 +74,7 @@ export default {
                 username : username,
                 password : password
             }
-            console.log("test");
+            
             http
                 .post(`/signin`, param)
                 .then(({ data }) => {

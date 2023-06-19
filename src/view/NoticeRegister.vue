@@ -1,33 +1,19 @@
 <template>
-	<div>
-		<h1>게시판 {{ isModify ? "수정" : "등록" }}</h1>
-
-		<div class="AddWrap">
-			<form>
-				<table class="tbAdd">
-					<colgroup>
-						<col width="15%" />
-						<col width="*" />
-					</colgroup>
-					<tr>
-						<th>제목</th>
-						<td><input type="text" id="subject"/></td>
-					</tr>
-					<tr>
-						<th>내용</th>
-						<td><textarea id="content"></textarea></td>
-					</tr>
-				</table>
-			</form>
-		</div>
-
-		<div class="btnWrap">
-			<a href="javascript:;" @click="mvPage('noticeMain')" class="btn">목록</a>
-			<a href="javascript:;" @click="insertList()" v-if="!isModify" class="btnAdd btn">등록</a>
-            <a href="javascript:;" @click="updateList()" v-if="isModify" class="btnAdd btn">수정</a>
-		</div>	
-	</div>
-</template>
+    <div class="list-create-container">
+        <h2>리스트 {{ isModify ? "수정" : "등록" }}</h2>
+        <div class="form-group">
+            <label for="subject">제목</label>
+            <input type="text" id="subject"/>
+        </div>
+        <div class="form-group">
+            <label for="itemDescription">내용</label>
+            <textarea id="content"></textarea>
+        </div>
+        <button @click="mvPage('noticeMain')" class="btn">목록</button>
+        <button @click="insertList()" v-if="!isModify" class="btnAdd btn">등록</button>
+        <button @click="updateList()" v-if="isModify" class="btnAdd btn">수정</button>
+    </div>
+  </template>
 
 <script>
 import { getCurrentInstance, onMounted, ref } from "vue";
@@ -135,13 +121,50 @@ export default {
 </script>
 
 <style scoped>
-	.tbAdd{border-top:1px solid #888;}
-	.tbAdd th, .tbAdd td{border-bottom:1px solid #eee; padding:5px 0;}
-	.tbAdd td{padding:10px 10px; box-sizing:border-box;}
-	.tbAdd td input{width:100%; min-height:30px; box-sizing:border-box; padding:0 10px;}
-	.tbAdd td textarea{width:100%; min-height:300px; padding:10px; box-sizing:border-box;}
-	.btnWrap{text-align:center; margin:20px 0 0 0;}
-	.btnWrap a{margin:0 10px;}
-	.btnAdd {background:#43b984}
-	.btnDelete{background:#f00;}
+.list-create-container {
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1000px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input,
+textarea {
+  width: 90%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 200px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
 </style>

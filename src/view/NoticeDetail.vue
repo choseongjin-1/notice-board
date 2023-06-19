@@ -1,21 +1,21 @@
 <template>
     <div>
-        <h2>Item Detail</h2>
+        <h2>리스트 상세</h2>
         <div class="detail-content">
-            <p><strong>Title:</strong> {{subject}}</p>
-            <p><strong>Content:</strong> {{content}}</p>
+            <p><strong>제목:</strong> {{subject}}</p>
+            <p><strong>내용:</strong> {{content}}</p>
         </div>
     
         <div class="button-container">
-            <button class="btn-list" @click="mvPage('noticeMain')">List</button>
-            <button class="btn-edit" @click="mvPage('noticeRegister')" v-if="isSameUser">Edit</button>
-            <button class="btn-delete" @click="deleteList()" v-if="isSameUser">Delete</button>
+            <button class="btn-list" @click="mvPage('noticeMain')">목록</button>
+            <button class="btn-edit" @click="mvPage('noticeRegister')" v-if="isSameUser">수정</button>
+            <button class="btn-delete" @click="deleteList()" v-if="isSameUser">삭제</button>
         </div>
   
         <div class="comment-container">
-            <h3>Comments</h3>
+            <h3>댓글</h3>
             <div v-if="comments.length === 0">
-                No comment found.
+                댓글 목록이 없습니다.
             </div>
             <ul class="comment-list">
                 <li v-for="comment in comments" :key="comment.id" class="comment-item">
@@ -24,7 +24,7 @@
                 </li>
             </ul>
             <input class="comment-input" type="text" id="commentInput" placeholder="댓글을 입력해 주세요." required>
-            <button class="btn-add-comment" @click="insertComment()">Add Comment</button>
+            <button class="btn-add-comment" @click="insertComment()">댓글 등록</button>
         </div>
     </div>
 </template>
