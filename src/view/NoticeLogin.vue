@@ -1,21 +1,22 @@
 <template>
     <div class="login-form">
-      <h2>Login</h2>
+      <h2>로그인</h2>
       <div class="form-group">
-        <label for="username">Username</label>
+        <label for="username">아이디</label>
         <input type="text" id="username" value="sjcho" required>
       </div>
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">비밀번호</label>
         <input type="password" id="password" value="1234"  required>
       </div>
       <div class="form-group">
         <label class="checkbox-label">
           <input type="checkbox" id="autoLogin" checked>
-          auto login
+            자동로그인
         </label>
       </div>
-      <button class="btn-login" @click="login">Login</button>
+      <button class="btn-login" @click="login">로그인</button>
+      <button class="btn-login" @click="mvPage('noticeSignUp')">회원가입</button>
     </div>
   </template>
 
@@ -162,6 +163,7 @@ export default {
 .btn-login {
   width: 100%;
   padding: 10px;
+  margin-bottom: 15px;
   background-color: #4caf50;
   border: none;
   color: #fff;

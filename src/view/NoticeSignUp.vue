@@ -1,28 +1,31 @@
 <template>
-    <div>
-        <label for="username">id: </label>
-        <input id="username" type="text" @blur="checkDuplicateId($event.target.value)">
+    <div class="signup-container">
+        <h2>회원가입</h2>
+        <div class="form-group">
+            <label for="username">사용자 아이디</label>
+            <input type="text" id="username" @blur="checkDuplicateId($event.target.value)" required>
+        </div>
+        <div class="form-group">
+            <label for="userNm">사용자 이름</label>
+            <input  id="userNm" required>
+        </div>
+        <div class="form-group">
+            <label for="email">이메일</label>
+            <input type="email" id="email" required>
+            <button id="autificateBtn" @click="autificateEmail">이메일 인증</button>
+        </div>
+        <div class="form-group">
+            <label for="confirmNum">인증번호</label>
+            <input id="confirmNum" type="text">
+            <button id="confirmBtn" @click="confirmNumber">인증번호확인</button>
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" required>
+        </div>
+        <button @click="signUp">가입하기</button>
     </div>
-    <div>
-        <label for="password">pw: </label>
-        <input id="password" type="password">
-    </div>
-    <div>
-        <label for="userNm">name: </label>
-        <input id="userNm" type="text">
-    </div>
-    <div>
-        <label for="email">email: </label>
-        <input id="email" type="text">
-        <button id="autificateBtn" @click="autificateEmail">이메일 인증</button>
-    </div>
-    <div>
-        <label for="number">number: </label>
-        <input id="confirmNum" type="text">
-        <button id="confirmBtn" @click="confirmNumber">인증번호확인</button>
-    </div>
-    <button @click="signUp">signUp</button>
-</template>
+  </template>
 
 <script>
     import { onMounted, getCurrentInstance, reactive } from "vue";
@@ -54,8 +57,7 @@
             }
             // 회원가입
             const signUp = () => {
-                //if (!isValid()) return
-                if (!confirm("회원가입 하시겠습니까?")) return
+                if (!isValid()) return
 
                 const param = {
                     userId : document.getElementById("username").value,
@@ -95,8 +97,19 @@
                     })
             }
             const autificateEmail = () => {
-                state.isConfirm = false
                 const email = document.getElementById("email").value
+                if (!email) {
+                    alert("이메일을 입력해 주세요.")
+                    return false
+                }
+
+                const regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+                if (!regEmail.test(email)) {
+                    alert("이메일 형식이 올바르지 않습니다.")
+                    return false
+                }
+
+                state.isConfirm = false
 
                 if (!email) {
                     alert("이메일을 입력해 주세요.")
@@ -126,6 +139,11 @@
                     return
                 }
 
+                if (state.number != confirmInput) {
+                    alert("인증번호가 일치하지 않습니다.")
+                    return
+                }
+
                 if (state.number == confirmInput) {
                     alert("이메일 인증이 완료되었습니다.")
                     state.isConfirm = true
@@ -138,15 +156,9 @@
                     return false
                 }
 
-                const password = document.getElementById("password").value
-                if (!password) {
-                    alert("비밀번호를 입력해 주세요.")
-                    return false
-                }
-
-                const regPw = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
-                if (!regPw.test(password)) {
-                    alert("비밀번호는 영문,숫자 조합하여 입력해 주세요. (8-20자)")
+                const userNm = document.getElementById("userNm").value
+                if (!userNm) {
+                    alert("성명을 입력해 주세요.")
                     return false
                 }
 
@@ -162,14 +174,31 @@
                     return false
                 }
 
+                const password = document.getElementById("password").value
+                if (!password) {
+                    alert("비밀번호를 입력해 주세요.")
+                    return false
+                }
+
+                // const regPw = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
+                // if (!regPw.test(password)) {
+                //     alert("비밀번호는 영문,숫자 조합하여 입력해 주세요. (8-20자)")
+                //     return false
+                // }
+
                 if (!state.isConfirm) {
                     alert("먼저 이메일을 인증해 주세요.")
+                    return false
+                }
+
+                if (!confirm("회원가입 하시겠습니까?")) {
                     return false
                 }
                 return true
             }
     
             return {
+                state : state,
                 mvPage : mvPage,
                 signUp : signUp,
                 checkDuplicateId : checkDuplicateId,
@@ -179,3 +208,42 @@
         }
     }
     </script>
+
+<style scoped>
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 90%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+}
+</style>

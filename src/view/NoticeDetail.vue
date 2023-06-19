@@ -189,19 +189,17 @@ h2 {
   background-color: #dc3545;
   color: #fff;
 }
-.btn-add-comment .btn-list {
-  background-color: #43b984;
-  color: #fff;
-}
 
 .comment-container {
   margin-top: 30px;
 }
 .comment-container .btn-add-comment {
   background-color: #43b984;
-  padding: 5px;
   color: #fff;
-  border: 1px solid #ccc;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 .comment-container .comment-input {
   width: 70%;
