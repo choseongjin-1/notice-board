@@ -81,7 +81,7 @@ export default {
         const deleteList = () => {
 
             const param = {
-                userSrno : store.getters["Login/getUserSrno"],
+                userSrno : history.state.userSrno,
                 listSrno : listSrno.value
             }
 
@@ -100,8 +100,9 @@ export default {
         }
         //댓글목록 조회
         const selectComment = () => {
+            console.log(`/selectComment/${history.state.userSrno}/${listSrno.value}`);
             http
-                .get(`/selectComment/${store.getters["Login/getUserSrno"]}/${listSrno.value}`)
+                .get(`/selectComment/${history.state.userSrno}/${listSrno.value}`)
                 .then(({ data }) => {
                     if (data.code == "0000") {
                         comments.value = data.rdata
@@ -117,7 +118,7 @@ export default {
             }
 
             const param = {
-                userSrno : store.getters["Login/getUserSrno"],
+                userSrno : history.state.userSrno,
                 listSrno : listSrno.value,
                 comment : document.getElementById("commentInput").value
             }

@@ -3,11 +3,11 @@
       <h2>로그인</h2>
       <div class="form-group">
         <label for="username">아이디</label>
-        <input type="text" id="username" value="sjcho" required>
+        <input type="text" id="username" value="" required>
       </div>
       <div class="form-group">
         <label for="password">비밀번호</label>
-        <input type="password" id="password" value="1234"  required>
+        <input type="password" id="password" value=""  required>
       </div>
       <div class="form-group">
         <label class="checkbox-label">

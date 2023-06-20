@@ -1,6 +1,10 @@
 <template>
 	<div>
-		<h2>List</h2>
+		<div class="header">
+			<h2>리스트</h2>
+			<button class="user-btn" @click="cancelAutoLogin">자동로그인해제</button>
+			<button class="user-btn" @click="mvPage('noticeModify')">회원정보수정</button>
+		</div>
 		<div v-if="list.length === 0">
 			No items found.
 		</div>
@@ -13,7 +17,7 @@
 			</div>
 			</li>
 		</ul>
-		<button class="btn-add" @click="mvPage('noticeRegister', -1)">Add Item</button>
+		<button class="btn-add" @click="mvPage('noticeRegister')">등록</button>
 	</div>
 </template>
 
@@ -51,6 +55,11 @@ export default {
                 })
 
 		}
+		// 자동로그인 해제
+		const cancelAutoLogin = () => {
+			localStorage.removeItem("webToken")
+			alert("자동로그인이 해제되었습니다.")
+		}
 
         const mvPage = (page, item) => {
 
@@ -70,13 +79,33 @@ export default {
             list : list,
             mvPage : mvPage,
 			selectList : selectList,
+			cancelAutoLogin : cancelAutoLogin,
         }
     }
 }
 </script>
 
 <style scoped>
-h2 {
+.header {
+	margin-bottom: 15%;
+}
+.header .user-btn {
+	float: right;
+	display: block;
+	width: 10%;
+	max-width: 300px;
+	margin: 16px auto;
+	padding: 12px 16px;
+	border-radius: 4px;
+	background-color: #4caf50;
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	cursor: pointer;
+}
+
+.header .h2 {
   text-align: center;
   margin-top: 20px;
 }
