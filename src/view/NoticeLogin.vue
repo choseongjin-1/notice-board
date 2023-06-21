@@ -3,15 +3,15 @@
       <h2>로그인</h2>
       <div class="form-group">
         <label for="username">아이디</label>
-        <input type="text" id="username" value="" required>
+        <input type="text" id="username" value="sjcho2" required>
       </div>
       <div class="form-group">
         <label for="password">비밀번호</label>
-        <input type="password" id="password" value=""  required>
+        <input type="password" id="password" value="1234"  required>
       </div>
       <div class="form-group">
         <label class="checkbox-label">
-          <input type="checkbox" id="autoLogin" checked>
+          <input type="checkbox" id="autoLogin">
             자동로그인
         </label>
       </div>
@@ -31,6 +31,7 @@ export default {
 
         const instance = getCurrentInstance();
         const http = instance.appContext.config.globalProperties.$http;
+        const common = instance.appContext.config.globalProperties.$common;
         const store = useStore();
 
         onMounted(() => {
@@ -90,8 +91,9 @@ export default {
                         store.commit("Login/setUserSrno", data.rdata.userSrno)
                         store.commit("Login/setUserId", data.rdata.userId)
 
-                        alert("로그인이 완료되었습니다.")
-                        mvPage("noticeMain")
+                        common.showAlert("로그인이 완료되었습니다.", () => {
+                            mvPage("noticeMain")
+                        })
                     } else {
                         alert("로그인에 실패하였습니다. 관리자에게 문의해주세요.")
                     }

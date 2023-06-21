@@ -1,6 +1,7 @@
 <template>
   <router-view/>
   <Spinner :loading="store.getters['Loading/loadingStatus']" />
+  <noticeAlert/>
 </template>
 
 <script>

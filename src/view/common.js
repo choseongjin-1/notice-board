@@ -22,5 +22,33 @@ export const common = {
     if (lv == "i") console.info(msg)
     if (lv == "w") console.warn(msg)
     if (lv == "e") console.error(msg)
-  }
+  },
+  // 얼럿창 오픈
+  showAlert(msg, positiveFn = function() {}) {
+    store.commit("Common/showAlert", {
+      isOpen : true,
+      type : 0,
+      msg : msg,
+      positiveFn : () => {
+        positiveFn()
+        store.commit("Common/closeAlert")
+      }
+    })
+  },
+  // 컨펌창 오픈
+  showConfirm(msg, positiveFn = function() {}, negativeFn = function() {}) {
+    store.commit("Common/showAlert", {
+      isOpen : true,
+      type : 1,
+      msg : msg,
+      positiveFn : () => {
+        positiveFn()
+        store.commit("Common/closeAlert")
+      },
+      negativeFn : () => {
+        negativeFn()
+        store.commit("Common/closeAlert")
+      }
+    })
+  },
 };
