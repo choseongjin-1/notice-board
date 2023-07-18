@@ -1,4 +1,7 @@
 # notice-board
+frontend - vue3
+backend - spring boot(java)
+database - postgreSql
 
 ## Project setup
 ```
